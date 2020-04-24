@@ -50,7 +50,11 @@ function unflipCards() {
 function resetTable() {
    cards.forEach( card => card.classList.remove('flip'))
    resetBoard()
-   shuffle()
+   cards.forEach(card => {
+      let randomPos = Math.floor(Math.random() * 12)
+      card.style.order = randomPos
+      })
+   
 }
 
 function resetBoard() {
