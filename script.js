@@ -5,7 +5,7 @@ let hasFlippedCard = false
 let lockBoard = false
 let firstCard, secondCard
 
-function flipCard(){
+function flipCard() {
    //flipping card
    if(lockBoard) return
    if(this === firstCard) return
@@ -23,20 +23,20 @@ function flipCard(){
      checkForMatch()
 }
 
-function checkForMatch(){
+function checkForMatch() {
    //checking for a match
    let isMatch = firstCard.dataset.framework === secondCard.dataset.framework
    isMatch ? disableCards() : unflipCards()
 }
 
-function disableCards(){
+function disableCards() {
    //removing click from cards and reset
    firstCard.removeEventListener('click',flipCard)
    secondCard.removeEventListener('click', flipCard)
    resetBoard()
 }
 
-function unflipCards(){
+function unflipCards() {
    //remove the flip with timing
    lockBoard = true
 
@@ -47,20 +47,30 @@ function unflipCards(){
       },1500)
 }
 
-function resetBoard(){
+function resetTable() {
+   cards.forEach( card => card.classList.remove('flip'))
+   resetBoard()
+   shuffle()
+}
+
+function resetBoard() {
    //resetting everything
    [hasFlippedCard, lockBoard] = [false,false]
    [firstCard, secondCard] = [null,null]
+   cards.forEach(card => card.addEventListener('click',flipCard)) 
 }
 
 // IIIFE Immediately Invoked Function Expression : 
 // will be executed right after its definition
-(function shuffle(){
+(function shuffle() {
    //shuffle the card in the beginning
    cards.forEach(card => {
    let randomPos = Math.floor(Math.random() * 12)
    card.style.order = randomPos
    })
 })()
+
+const refreshButton = document.getElementById('refresh-button')
+refreshButton.addEventListener('click',resetTable)
 
 cards.forEach(card => card.addEventListener('click',flipCard)) //add click to every card
